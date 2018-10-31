@@ -186,6 +186,17 @@ include("backends/plotly.jl")
 include("backends/gr.jl")
 include("backends/web.jl")
 
+using Pkg
+
+import GR
+export GR
+
+using UUIDs
+
+import FixedPointNumbers: N0f8 #In core Julia
+
+
+
 # ---------------------------------------------------------
 
 @shorthands scatter

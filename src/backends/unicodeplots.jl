@@ -132,7 +132,6 @@ end
 
 # -------------------------------
 
-# since this is such a hack, it's only callable using `png`... should error during normal `show`
 function png(plt::AbstractPlot{UnicodePlotsBackend}, fn::AbstractString)
     fn = addExtension(fn, "png")
 

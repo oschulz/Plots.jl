@@ -129,7 +129,6 @@ savefig(fn::AbstractString) = savefig(current(), fn)
 """
     gui([plot])
 
-Display a plot using the backends' gui window
 """
 gui(plt::Plot = current()) = display(PlotsDisplay(), plt)
 

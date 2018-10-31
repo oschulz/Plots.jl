@@ -478,7 +478,6 @@ function round_limits(amin,amax)
     amin, amax
 end
 
-# using the axis extrema and limit overrides, return the min/max value for this axis
 function axis_limits(axis::Axis, should_widen::Bool = default_should_widen(axis))
     ex = axis[:extrema]
     amin, amax = ex.emin, ex.emax

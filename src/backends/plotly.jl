@@ -20,11 +20,6 @@ end
 const plotly_remote_file_path = "https://cdn.plot.ly/plotly-latest.min.js"
 
 
-# if isatom()
-#     import Atom
-#     Atom.@msg evaljs(_js_code)
-# end
-using UUIDs
 
 push!(_initialized_backends, :plotly)
 # ----------------------------------------------------------------
@@ -339,7 +334,6 @@ function plotly_layout(plt::Plot)
         plotattributes_out
     end
 
-    # turn off hover if nothing's using it
     if all(series -> series.plotattributes[:hover] in (false,:none), plt.series_list)
         plotattributes_out[:hovermode] = "none"
     end
@@ -811,7 +805,6 @@ function html_head(plt::Plot{PlotlyBackend})
     local_file = ("file://" * plotly_local_file_path)
     plotly = use_local_dependencies[] ? local_file : plotly_remote_file_path
     if isijulia() && !ijulia_initialized[]
-        # using requirejs seems to be key to load a js depency in IJulia!
         # https://requirejs.org/docs/start.html
         # https://github.com/JuliaLang/IJulia.jl/issues/345
         display("text/html", """

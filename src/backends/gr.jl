@@ -3,8 +3,6 @@
 
 # significant contributions by @jheinen
 
-import GR
-export GR
 
 # --------------------------------------------------------------------------------------
 
@@ -213,7 +211,6 @@ function gr_polaraxes(rmin::Real, rmax::Real, sp::Subplot)
 end
 
 
-# using the axis extrema and limit overrides, return the min/max value for this axis
 gr_x_axislims(sp::Subplot) = axis_limits(sp[:xaxis])
 gr_y_axislims(sp::Subplot) = axis_limits(sp[:yaxis])
 gr_z_axislims(sp::Subplot) = axis_limits(sp[:zaxis])

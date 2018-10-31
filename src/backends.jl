@@ -1,4 +1,3 @@
-using Pkg
 
 struct NoBackend <: AbstractBackend end
 
@@ -310,17 +309,11 @@ end
 
 function _initialize_backend(pkg::AbstractBackend)
     sym = backend_package_name(pkg)
-    @eval Main begin
-        import $sym
-        export $sym
-    end
 end
 
 function add_backend_string(pkg::AbstractBackend)
     sym = backend_package_name(pkg)
     """
-    using Pkg
-    Pkg.add("$sym")
     """
 end
 
@@ -444,14 +437,12 @@ const _plotly_marker = [
 ]
 const _plotly_scale = [:identity, :log10]
 
+
 # ------------------------------------------------------------------------------
 # pgfplots
 
 function add_backend_string(::PGFPlotsBackend)
     """
-    using Pkg
-    Pkg.add("PGFPlots")
-    Pkg.build("PGFPlots")
     """
 end
 
@@ -500,18 +491,10 @@ const _pgfplots_scale = [:identity, :ln, :log2, :log10]
 
 function _initialize_backend(pkg::PlotlyJSBackend)
     sym = backend_package_name(pkg)
-    @eval Main begin
-        import PlotlyJS, ORCA
-        export PlotlyJS
-    end
 end
 
 function add_backend_string(::PlotlyJSBackend)
     """
-    using Pkg
-    Pkg.add(["PlotlyJS", "Blink", "ORCA"])
-    import Blink
-    Blink.AtomShell.install()
     """
 end
 
@@ -525,27 +508,10 @@ const _plotlyjs_scale       = _plotly_scale
 # pyplot
 
 function _initialize_backend(::PyPlotBackend)
-    @eval Main begin
-        import PyPlot, PyCall
-        import LaTeXStrings
-
-        export PyPlot
-
-        # we don't want every command to update the figure
-        PyPlot.ioff()
-    end
 end
 
 function add_backend_string(::PyPlotBackend)
     """
-    using Pkg
-    Pkg.add("PyPlot")
-    Pkg.add("PyCall")
-    Pkg.add("LaTeXStrings")
-    withenv("PYTHON" => "") do
-        Pkg.build("PyCall")
-        Pkg.build("PyPlot")
-    end
     """
 end
 
@@ -604,9 +570,6 @@ const _pyplot_scale = [:identity, :ln, :log2, :log10]
 
 function add_backend_string(::UnicodePlotsBackend)
     """
-    using Pkg
-    Pkg.add("UnicodePlots")
-    Pkg.build("UnicodePlots")
     """
 end
 

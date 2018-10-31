@@ -158,7 +158,6 @@ function _animate(forloop::Expr, args...; callgif = false)
 end
 
 """
-Builds an `Animation` using one frame per loop iteration, then create an animated GIF.
 
 Example:
 

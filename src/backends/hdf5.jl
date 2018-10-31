@@ -3,11 +3,11 @@
 
 #==Usage
 ===============================================================================
-Write to .hdf5 file using:
+Write to .hdf5 file :
     p = plot(...)
    Plots.hdf5plot_write(p, "plotsave.hdf5")
 
-Read from .hdf5 file using:
+Read from .hdf5 file :
     pyplot() #Must first select backend
     pread = Plots.hdf5plot_read("plotsave.hdf5")
     display(pread)
@@ -31,7 +31,6 @@ Read from .hdf5 file using:
       a certain feature (ex: :steppre)
 ==#
 
-import FixedPointNumbers: N0f8 #In core Julia
 
 #Dispatch types:
 struct HDF5PlotNative; end #Indentifies a data element that can natively be handled by HDF5
@@ -50,14 +49,12 @@ const _hdf5_dataroot = "data" #TODO: Eventually move data to different root (eas
 const _hdf5plot_datatypeid = "TYPE" #Attribute identifying type
 const _hdf5plot_countid = "COUNT" #Attribute for storing count
 
-#Dict has problems using "Types" as keys.  Initialize in "_initialize_backend":
 const HDF5PLOT_MAP_STR2TELEM = Dict{String, Type}()
 const HDF5PLOT_MAP_TELEM2STR = Dict{Type, String}()
 
 #Don't really like this global variable... Very hacky
 const HDF5PLOT_PLOTREF = HDF5Plot_PlotRef(nothing)
 
-#Simple sub-structures that can just be written out using _hdf5plot_gwritefields:
 const HDF5PLOT_SIMPLESUBSTRUCT = Union{Font, BoundingBox,
 	GridLayout, RootLayout, ColorGradient, SeriesAnnotations, PlotText,
 	Shape,
@@ -290,7 +287,7 @@ function _hdf5plot_gwrite(grp, k::String, v::Tuple)
     if elt <: Number
         #We just wrote a simple dataset
         _hdf5plot_overwritetype(grp, k, Tuple)
-    else #Used a more complex scheme (using subgroups):
+    else
         _hdf5plot_overwritetype(grp[k], HDF5CTuple)
     end
     #NOTE: _hdf5plot_overwritetype overwrites "Array" type with "Tuple".
@@ -308,7 +305,6 @@ end
 function _hdf5plot_gwrite(grp, k::String, v::Colorant)
     _hdf5plot_gwrite(grp, k, ARGB{N0f8}(v))
 end
-#Custom vector (when not using simple numeric type):
 function _hdf5plot_gwritearray(grp, k::String, v::Array{T}) where T
     vgrp = HDF5.g_create(grp, k)
     _hdf5plot_writetype(vgrp, Array) #ANY
@@ -360,7 +356,6 @@ function _hdf5plot_gwrite(grp, k::String, v::Surface)
 	_hdf5plot_gwrite(grp, "data2d", v.surf)
 	_hdf5plot_writetype(grp, Surface)
 end
-# #TODO: "Properly" support Nullable using _hdf5plot_writetype?
 # function _hdf5plot_gwrite(grp, k::String, v::_hdf5_nullable)
 #     if isnull(v)
 #         _hdf5plot_gwrite(grp, k, nothing)
